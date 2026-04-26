@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#1F2D3A" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Louis" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png" />
+<title>Louis &middot; A note for the people watching him</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Gloock&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  /* Password gate */
+  .gate {
+    position: fixed;
+    inset: 0;
+    background: #1F2D3A;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .gate-inner {
+    max-width: 360px;
+    width: 100%;
+    text-align: center;
+    color: #F5F0E9;
+    font-family: 'Work Sans', -apple-system, system-ui, sans-serif;
+  }
+  .gate-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #B0BEC9;
+    font-weight: 500;
+    margin-bottom: 16px;
+  }
+  .gate-title {
+    font-family: 'Gloock', Georgia, serif;
+    font-size: 44px;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+  .gate-title .dot { color: #B0BEC9; }
+  .gate-sub {
+    font-size: 14px;
+    color: #B0BEC9;
+    margin-bottom: 28px;
+    line-height: 1.5;
+  }
+  .gate-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .gate input {
+    background: rgba(245, 240, 233, 0.08);
+    border: 1px solid rgba(245, 240, 233, 0.2);
+    color: #F5F0E9;
+    font-family: 'Work Sans', system-ui, sans-serif;
+    font-size: 17px;
+    padding: 14px 16px;
+    border-radius: 4px;
+    outline: none;
+    text-align: center;
+    letter-spacing: 0.04em;
+  }
+  .gate input:focus {
+    border-color: #B0BEC9;
+    background: rgba(245, 240, 233, 0.12);
+  }
+  .gate button {
+    background: #F5F0E9;
+    color: #1F2D3A;
+    border: none;
+    padding: 14px 16px;
+    border-radius: 4px;
+    font-family: 'Work Sans', system-ui, sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    cursor: pointer;
+  }
+  .gate button:hover { background: #FFFFFF; }
+  .gate-error {
+    color: #E8A89A;
+    font-size: 13px;
+    margin-top: 4px;
+    min-height: 18px;
+  }
+  body.gated { overflow: hidden; }
+</style>
+<style>
+  :root {
+    /* Brand */
+    --cream: #F5F0E9;
+    --charcoal: #2A2420;
+    --stormy: #4A5E70;
+    /* Extended ocean family */
+    --ocean-deep: #1F2D3A;
+    --ocean-mid: #34485A;
+    --ocean-light: #B0BEC9;
+    /* Cream variations */
+    --cream-warm: #ECE6DB;
+    --cream-on-ink: #F5F0E9;
+    /* Utility */
+    --rule: rgba(42, 36, 32, 0.12);
+    --rule-on-ink: rgba(245, 240, 233, 0.14);
+    --max-width: 700px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+  body {
+    font-family: 'Work Sans', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--charcoal);
+    background: var(--cream);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .wrap {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 28px 24px 96px;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 8px 0 36px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 36px;
+  }
+
+  .hero-photo {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: var(--cream-warm);
+    margin-bottom: 28px;
+  }
+
+  .hero-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+    display: block;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--stormy);
+    margin-bottom: 14px;
+  }
+
+  .hero h1 {
+    font-family: 'Gloock', Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(56px, 14vw, 88px);
+    line-height: 0.95;
+    letter-spacing: -0.015em;
+    color: var(--charcoal);
+    margin-bottom: 18px;
+  }
+
+  .hero h1 .dot { color: var(--stormy); }
+
+  .hero .lede {
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--charcoal);
+    max-width: 540px;
+    font-weight: 400;
+  }
+
+  .hero .lede strong { font-weight: 500; }
+
+  /* Emergency block */
+  .emergency {
+    background: var(--ocean-deep);
+    color: var(--cream-on-ink);
+    padding: 32px 26px 26px;
+    margin: 0 0 56px;
+  }
+
+  .emergency .label {
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ocean-light);
+    margin-bottom: 18px;
+  }
+
+  .emergency h2 {
+    font-family: 'Gloock', Georgia, serif;
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 1.1;
+    color: var(--cream-on-ink);
+    margin-bottom: 28px;
+    letter-spacing: -0.005em;
+  }
+
+  .emergency .row {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--rule-on-ink);
+  }
+
+  .emergency .row:last-of-type { border-bottom: none; }
+
+  .emergency .who {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ocean-light);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+
+  .emergency .what { font-size: 17px; line-height: 1.45; font-weight: 400; }
+
+  .emergency .what a {
+    color: var(--cream-on-ink);
+    text-decoration: underline;
+    text-decoration-color: rgba(245, 240, 233, 0.4);
+    text-underline-offset: 4px;
+  }
+
+  .emergency .what a:hover { text-decoration-color: var(--cream-on-ink); }
+
+  .emergency .what .meta {
+    display: block;
+    font-size: 14px;
+    color: var(--ocean-light);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+
+  .emergency .what .meta a {
+    color: var(--ocean-light);
+    text-decoration-color: rgba(107, 126, 142, 0.4);
+  }
+  .emergency .what .meta a:hover { color: var(--cream-on-ink); }
+
+  .emergency .nik-line {
+    margin-top: 22px;
+    padding-top: 22px;
+    border-top: 1px solid var(--rule-on-ink);
+    font-size: 14px;
+    color: var(--ocean-light);
+    font-family: 'Gloock', Georgia, serif;
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  /* Section headers */
+  section {
+    margin-bottom: 64px;
+    scroll-margin-top: 16px;
+  }
+
+  .section-num {
+    display: none;
+  }
+
+  h2.section-title {
+    font-family: 'Gloock', Georgia, serif;
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    color: var(--charcoal);
+    margin-bottom: 24px;
+  }
+
+  h3 {
+    font-family: 'Gloock', Georgia, serif;
+    font-weight: 400;
+    font-size: 22px;
+    color: var(--charcoal);
+    margin-bottom: 12px;
+    margin-top: 28px;
+    letter-spacing: -0.005em;
+  }
+
+  h3:first-child, h3.first { margin-top: 0; }
+
+  p { margin-bottom: 14px; }
+
+  /* Definition list */
+  dl { margin-bottom: 14px; }
+  dt {
+    font-weight: 500;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--stormy);
+    margin-top: 18px;
+    margin-bottom: 6px;
+  }
+  dt:first-of-type { margin-top: 0; }
+  dd { font-size: 17px; line-height: 1.55; margin-left: 0; }
+  dd strong { font-weight: 500; }
+
+  /* Lists */
+  ul.clean { list-style: none; padding: 0; }
+  ul.clean li {
+    padding: 10px 0 10px 22px;
+    position: relative;
+    line-height: 1.5;
+    border-bottom: 1px solid var(--rule);
+  }
+  ul.clean li:last-child { border-bottom: none; }
+  ul.clean li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 21px;
+    width: 10px;
+    height: 1px;
+    background: var(--stormy);
+  }
+  ul.clean li strong { font-weight: 500; }
+
+  /* Do/Don't */
+  .dodont { display: grid; gap: 20px; }
+  @media (min-width: 640px) {
+    .dodont { grid-template-columns: 1fr 1fr; gap: 24px; }
+  }
+
+  .dodont-block {
+    background: var(--cream-warm);
+    padding: 24px 22px 20px;
+  }
+
+  .dodont-block h4 {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--stormy);
+  }
+
+  .dodont-block ul { list-style: none; padding: 0; }
+  .dodont-block li {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(42, 36, 32, 0.08);
+    line-height: 1.45;
+    font-size: 16px;
+  }
+  .dodont-block li:last-child { border-bottom: none; }
+
+  /* Callouts */
+  .callout {
+    background: var(--cream-warm);
+    border-left: 3px solid var(--stormy);
+    padding: 20px 22px;
+    margin: 22px 0;
+  }
+
+  .callout .callout-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--stormy);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .callout p { font-size: 15px; line-height: 1.55; margin-bottom: 6px; }
+  .callout p:last-child { margin-bottom: 0; }
+
+  /* Watch-for */
+  .watchfor-item {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .watchfor-item:last-child { border-bottom: none; }
+  .watchfor-item h4 {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--stormy);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 6px;
+  }
+  .watchfor-item p { font-size: 16px; line-height: 1.5; margin-bottom: 0; }
+
+  /* Links */
+  a {
+    color: var(--stormy);
+    text-decoration: underline;
+    text-decoration-color: rgba(74, 94, 112, 0.35);
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+  }
+  a:hover { text-decoration-color: var(--stormy); }
+
+  /* Heat warning */
+  .heat-rule {
+    background: var(--ocean-mid);
+    color: var(--cream-on-ink);
+    padding: 28px 26px;
+    margin: 22px 0;
+  }
+  .heat-rule .heat-label {
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--ocean-light);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .heat-rule .heat-title {
+    font-family: 'Gloock', Georgia, serif;
+    font-size: 30px;
+    line-height: 1.05;
+    color: var(--cream-on-ink);
+    margin-bottom: 18px;
+    letter-spacing: -0.005em;
+  }
+  .heat-rule p { font-size: 16px; line-height: 1.55; margin-bottom: 10px; color: var(--cream-on-ink); }
+  .heat-rule p:last-child { margin-bottom: 0; }
+  .heat-rule strong { font-weight: 600; color: #FFFFFF; }
+
+  /* Quick-jump nav */
+  .jumpnav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0 0 56px;
+    padding: 18px 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .jumpnav a {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    background: var(--cream-warm);
+    text-decoration: none;
+    color: var(--charcoal);
+    font-weight: 500;
+  }
+  .jumpnav a:hover { background: var(--stormy); color: var(--cream-on-ink); }
+
+  /* Closing */
+  .closing {
+    margin-top: 72px;
+    padding-top: 36px;
+    border-top: 1px solid var(--rule);
+    text-align: center;
+  }
+  .closing p {
+    font-family: 'Gloock', Georgia, serif;
+    font-style: italic;
+    font-size: 20px;
+    color: var(--charcoal);
+    line-height: 1.5;
+  }
+  .closing .sig {
+    font-family: 'Gloock', Georgia, serif;
+    font-size: 26px;
+    color: var(--stormy);
+    margin-top: 14px;
+    font-style: italic;
+  }
+
+  @media (max-width: 480px) {
+    body { font-size: 16px; }
+    .wrap { padding: 24px 20px 80px; }
+    .emergency { padding: 28px 22px 22px; margin-bottom: 48px; }
+    h2.section-title { font-size: 30px; }
+    section { margin-bottom: 52px; }
+  }
+
+  /* Print / PDF */
+  @media print {
+    @page {
+      size: letter;
+      margin: 0.5in;
+    }
+    body { font-size: 11pt; background: var(--cream); }
+    .wrap { padding: 0; max-width: 100%; }
+    .jumpnav { display: none; }
+    .hero { padding: 0 0 20px; margin-bottom: 20px; page-break-inside: avoid; page-break-after: avoid; }
+    .hero-photo { aspect-ratio: auto; height: 2.4in; max-height: 2.4in; margin-bottom: 14px; }
+    .hero-photo img { object-position: center 50%; }
+    .hero h1 { font-size: 44pt; margin-bottom: 10px; }
+    .hero-eyebrow { margin-bottom: 6px; }
+    .hero .lede { font-size: 11pt; }
+    .emergency, .heat-rule, .dodont-block, .callout, .watchfor-item { page-break-inside: avoid; }
+    section { page-break-inside: auto; margin-bottom: 32px; }
+    h2.section-title { page-break-after: avoid; font-size: 22pt; }
+    h3 { page-break-after: avoid; font-size: 14pt; }
+    .emergency h2 { font-size: 18pt; }
+    .heat-rule { padding: 14pt 16pt; }
+    a { text-decoration-color: var(--stormy); }
+    .closing { page-break-before: avoid; margin-top: 32px; }
+    /* Force colors to print */
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  }
+</style>
+</head>
+<body class="gated">
+
+<!-- Password gate -->
+<div class="gate" id="gate">
+  <div class="gate-inner">
+    <div class="gate-eyebrow">Private</div>
+    <div class="gate-title">Louis<span class="dot">.</span></div>
+    <div class="gate-sub">Enter the code Nik sent you.</div>
+    <div class="gate-form">
+      <input type="text" id="gate-input" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Code" />
+      <button type="button" id="gate-submit">Enter</button>
+      <div class="gate-error" id="gate-error">&nbsp;</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Change this to whatever passcode you want to share with the sitters.
+  // Keep it simple. Lowercase, easy to type on a phone.
+  const LOUIS_PASSCODE = 'frenchie';
+
+  (function() {
+    const gate = document.getElementById('gate');
+    const input = document.getElementById('gate-input');
+    const submit = document.getElementById('gate-submit');
+    const error = document.getElementById('gate-error');
+
+    // If they already authenticated this session, skip the gate
+    if (sessionStorage.getItem('louis-ok') === '1') {
+      gate.remove();
+      document.body.classList.remove('gated');
+      return;
+    }
+
+    function tryUnlock() {
+      const val = (input.value || '').trim().toLowerCase();
+      if (val === LOUIS_PASSCODE.toLowerCase()) {
+        sessionStorage.setItem('louis-ok', '1');
+        gate.remove();
+        document.body.classList.remove('gated');
+      } else {
+        error.textContent = 'Try again.';
+        input.value = '';
+        input.focus();
+      }
+    }
+
+    submit.addEventListener('click', tryUnlock);
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') tryUnlock();
+    });
+
+    // Auto-focus when page loads
+    setTimeout(() => input.focus(), 100);
+  })();
+</script>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-photo">
+      <img src="louis.jpg" alt="Louis, a French Bulldog, sitting on white sheets" />
+    </div>
+    <div class="hero-eyebrow">A note for the humans watching him</div>
+    <h1>Louis<span class="dot">.</span></h1>
+    <p class="lede"><strong>Thank you for taking care of him.</strong> Everything you need is below. Emergency stuff up top, the fun stuff at the bottom.</p>
+  </header>
+
+  <!-- EMERGENCY -->
+  <div class="emergency">
+    <div class="label">In an emergency</div>
+    <h2>Call Nik first. Always.</h2>
+
+    <div class="row">
+      <div class="who">Nik &middot; Cell</div>
+      <div class="what"><a href="tel:+19188331933">918.833.1933</a><span class="meta">Call or text. Anytime. Don't hesitate.</span></div>
+    </div>
+
+    <div class="row">
+      <div class="who">If you can't reach Nik &middot; Babylee (Nik's aunt)</div>
+      <div class="what"><a href="tel:+17074569484">707.456.9484</a></div>
+    </div>
+
+    <div class="row">
+      <div class="who">Louis's vet &middot; Palms &amp; Paws</div>
+      <div class="what">
+        <a href="tel:+18667256729">1-866-PALMPAW (725-6729)</a>
+        <span class="meta">
+          <a href="https://maps.google.com/?q=1655+9th+Street+Santa+Monica+CA+90404" target="_blank" rel="noopener">1655 9th Street, Santa Monica</a><br>
+          Mon&ndash;Fri 8a&ndash;6p &middot; Sat&ndash;Sun 8a&ndash;4p &middot; Wed closed 12&ndash;2p
+        </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="who">24-hour emergency &middot; VEG Santa Monica</div>
+      <div class="what">
+        <a href="tel:+14245384876">424.538.4876</a>
+        <span class="meta">
+          <a href="https://maps.google.com/?q=2700+Wilshire+Boulevard+Santa+Monica+CA+90403" target="_blank" rel="noopener">2700 Wilshire Boulevard, Santa Monica</a><br>
+          Open 24/7
+        </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="who">Building office (next door)</div>
+      <div class="what"><a href="tel:+13103616519">310.361.6519</a></div>
+    </div>
+
+    <div class="row">
+      <div class="who">ASPCA Poison Control</div>
+      <div class="what"><a href="tel:+18884264435">888.426.4435</a></div>
+    </div>
+
+    <p class="nik-line">If something feels off about Louis, call. That's what I'm here for.</p>
+  </div>
+
+  <!-- JUMP NAV -->
+  <nav class="jumpnav" aria-label="Jump to section">
+    <a href="#about">About Louis</a>
+    <a href="#care">Care</a>
+    <a href="#dodonts">Do &amp; Don't</a>
+    <a href="#watch">Watch For</a>
+    <a href="#house">House</a>
+    <a href="#nbhd">Neighborhood</a>
+    <a href="#breaks">If Something Breaks</a>
+  </nav>
+
+  <!-- ABOUT LOUIS -->
+  <section id="about">
+    <div class="section-num">i.</div>
+    <h2 class="section-title">About Louis</h2>
+    <dl>
+      <dt>Age</dt><dd>2.5 years</dd>
+      <dt>Weight</dt><dd>20 lbs</dd>
+      <dt>Personality</dt><dd>Sweet, social, and stubborn.</dd>
+      <dt>Loves</dt><dd>People, sleeping, tug, balloons, snuggling, cheese chews.</dd>
+      <dt>Hates</dt><dd>Loud noises. Being too hot or too cold. Being told what to do (he will ignore you).</dd>
+      <dt>Quirk to expect</dt><dd>He'll run around the house and make you chase him when it's time to go outside. This is his bit.</dd>
+    </dl>
+  </section>
+
+  <!-- CARE -->
+  <section id="care">
+    <div class="section-num">ii.</div>
+    <h2 class="section-title">Daily care</h2>
+
+    <h3 class="first">Food</h3>
+    <dl>
+      <dt>What</dt><dd>Homemade meals. Half a container or block per meal.</dd>
+      <dt>How</dt><dd>Microwave 30 seconds. Longer if still frozen. <strong>Test the temp before giving it to him.</strong> Add a rice block every few days if you'd like.</dd>
+      <dt>Where</dt><dd>Freezer and fridge.</dd>
+      <dt>When</dt><dd>Twice a day. Morning around 6&ndash;8a, evening around 5p.</dd>
+      <dt>Treats</dt><dd>In the jar on the counter. <strong>No people food. No chicken treats.</strong></dd>
+      <dt>Water</dt><dd>Fresh tap, top up daily, full refresh every 2&ndash;3 days.</dd>
+    </dl>
+
+    <h3>Walks</h3>
+    <dl>
+      <dt>How many</dt><dd>At least three. First thing in the morning, before dinner, before bed.</dd>
+      <dt>Length</dt><dd>Depends on temperature. Never longer than 45 minutes or you'll be carrying him home.</dd>
+      <dt>Routes</dt><dd>Arizona to 3rd Street, or Ocean depending on weather and time. Then up to Santa Monica or Broadway and back. 15&ndash;30 minutes is plenty.</dd>
+      <dt>Gear</dt><dd>Leash and harness on the door handle in the entry. Poop bags out front. Pepper spray and key in the drawer under the Buddha.</dd>
+    </dl>
+
+    <div class="heat-rule">
+      <div class="heat-label">Heat rule</div>
+      <div class="heat-title">Frenchies overheat fast.</div>
+      <p><strong>Under 65&deg;F:</strong> longer walks are fine.</p>
+      <p><strong>70&deg;F and up:</strong> keep walks under 30 minutes.</p>
+      <p><strong>Over 75&deg;F:</strong> just out front is fine. Stick to shade. Watch the pavement, it burns paws.</p>
+      <p>If he pants and stops, listen. He's telling you he's done.</p>
+    </div>
+
+    <h3>Sleep</h3>
+    <dl>
+      <dt>Where</dt><dd>In bed with you.</dd>
+      <dt>Routine</dt><dd>He'll want to play before bed. 10&ndash;15 minutes of fetch will set you both up for a more restful night. When you're done, tell him "<em>enough</em>" or "<em>time for quiet time.</em>"</dd>
+      <dt>Crate</dt><dd>Door is always open. He'll go in when he wants it.</dd>
+    </dl>
+
+    <h3>Bathroom &amp; grooming</h3>
+    <dl>
+      <dt>Bathroom</dt><dd>Once before 9a, once before bed. Standard rhythm is around 6a and 5p. A midday quick-down is nice but optional, especially if it's warm. A short down-and-up before bed too.</dd>
+      <dt>Nose</dt><dd>If it looks crusty, dab on the nose cream.</dd>
+    </dl>
+  </section>
+
+  <!-- LOUIS DO/DON'T -->
+  <section id="dodonts">
+    <div class="section-num">iii.</div>
+    <h2 class="section-title">Louis &middot; Do &amp; Don't</h2>
+
+    <div class="dodont">
+      <div class="dodont-block">
+        <h4>Do</h4>
+        <ul>
+          <li>Lift him with a scoop. Always support his back end and legs.</li>
+          <li>Take him to see his friend Kellie at <a href="https://www.google.com/search?q=Sweat+Yoga+Santa+Monica" target="_blank" rel="noopener">Sweat Yoga</a> downstairs. He'll lead you.</li>
+          <li>Take him to the roof. He loves it up there.</li>
+          <li>Take him on errands: <a href="https://www.google.com/search?q=Vons+Santa+Monica" target="_blank" rel="noopener">Vons</a>, <a href="https://www.google.com/search?q=Target+Santa+Monica" target="_blank" rel="noopener">Target</a>, <a href="https://www.google.com/search?q=Couplet+Coffee+Santa+Monica" target="_blank" rel="noopener">Couplet</a>, <a href="https://www.google.com/search?q=Chipotle+Santa+Monica" target="_blank" rel="noopener">Chipotle</a>, <a href="https://www.google.com/search?q=Monica+Cafe+Santa+Monica" target="_blank" rel="noopener">Monica</a>. He's a scene guy.</li>
+          <li>Carry the pepper spray. <strong>Frenchie thefts are a thing.</strong> Be aware when strangers want to pet him.</li>
+        </ul>
+      </div>
+
+      <div class="dodont-block">
+        <h4>Don't</h4>
+        <ul>
+          <li>Lift him by just the front end. It strains his back and can damage his spine.</li>
+          <li>Take him to the pier or the beach.</li>
+          <li>Take him for car rides.</li>
+          <li>Play too rough. He gets overstimulated and goes "crazy eyes." When that happens, walk away. He'll reset.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- WATCH FOR -->
+  <section id="watch">
+    <div class="section-num">iv.</div>
+    <h2 class="section-title">Watch for</h2>
+    <p style="margin-bottom: 22px; color: var(--charcoal);">Frenchies are brachycephalic, which means flat-faced and breathing-vulnerable. Most of the time he's fine. These are the things that warrant a call.</p>
+
+    <div class="watchfor-item">
+      <h4>Overheating</h4>
+      <p>Heavy panting that doesn't slow. Gums turning blue or bright red. Lethargy. Collapse. Cool him down immediately and call the vet.</p>
+    </div>
+    <div class="watchfor-item">
+      <h4>Breathing distress</h4>
+      <p>Different from his normal snorting. If he's struggling for air, especially after exertion or in heat, treat as emergency.</p>
+    </div>
+    <div class="watchfor-item">
+      <h4>Eye issues</h4>
+      <p>Cloudiness, excessive tearing, squinting, redness. Frenchies have prominent eyes and they're vulnerable.</p>
+    </div>
+    <div class="watchfor-item">
+      <h4>Skin folds</h4>
+      <p>Redness, smell, or wetness in his face folds.</p>
+    </div>
+    <div class="watchfor-item">
+      <h4>GI</h4>
+      <p>Vomiting more than once. Diarrhea more than a day. Refusing food.</p>
+    </div>
+
+    <div class="callout">
+      <div class="callout-label">When in doubt</div>
+      <p>Call or text Nik. There's no such thing as too soon.</p>
+    </div>
+  </section>
+
+  <!-- HOUSE -->
+  <section id="house">
+    <div class="section-num">v.</div>
+    <h2 class="section-title">The house</h2>
+
+    <dl>
+      <dt>WiFi</dt><dd>Nik will set this up with you when you arrive.</dd>
+      <dt>Thermostat</dt><dd>Whatever's comfortable for you. Don't go above 73&deg;F for Louis's sake.</dd>
+      <dt>Trash &amp; recycling</dt><dd>Down the hall, last door on the left.</dd>
+      <dt>Laundry</dt><dd>Detergent and supplies under the bathroom sink.</dd>
+      <dt>Quiet hours</dt><dd>10p&ndash;8a.</dd>
+    </dl>
+
+    <h3>House &middot; Do &amp; Don't</h3>
+
+    <div class="dodont">
+      <div class="dodont-block">
+        <h4>Do</h4>
+        <ul>
+          <li>Make yourselves at home. Help yourself to food, coffee, cooking essentials.</li>
+          <li>Use the turntables and listen to vinyl.</li>
+          <li>Use the balcony, the rooftop grill, and the rooftop space.</li>
+          <li>Lock the door.</li>
+          <li>Adhere to quiet hours, 10p&ndash;8a.</li>
+        </ul>
+      </div>
+
+      <div class="dodont-block">
+        <h4>Don't</h4>
+        <ul>
+          <li>Worry.</li>
+          <li>Lose the key fob. There is only one.</li>
+          <li>Let people piggyback into the building behind you.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEIGHBORHOOD -->
+  <section id="nbhd">
+    <div class="section-num">vi.</div>
+    <h2 class="section-title">The neighborhood</h2>
+
+    <h3 class="first">Walking routes for Louis</h3>
+    <ul class="clean">
+      <li><strong>Short loop</strong> &middot; To 3rd Street and back.</li>
+      <li><strong>Longer walk</strong> &middot; To Ocean and Palisades Park.</li>
+      <li><strong>Best green</strong> &middot; <a href="https://www.google.com/search?q=Christine+Emerson+Reed+Park+Santa+Monica" target="_blank" rel="noopener">Christine Emerson Reed Park</a>, or Palisades down at Montana Avenue (only if it's 65&deg;F or cooler).</li>
+      <li><strong>Avoid</strong> &middot; The Pier and the beach.</li>
+    </ul>
+
+    <h3>Coffee &amp; matcha</h3>
+    <ul class="clean">
+      <li><a href="https://www.google.com/search?q=Couplet+Coffee+Santa+Monica" target="_blank" rel="noopener">Couplet</a></li>
+      <li><a href="https://www.google.com/search?q=Monica+Cafe+Santa+Monica" target="_blank" rel="noopener">Monica</a></li>
+      <li><a href="https://www.google.com/search?q=Blue+Bottle+Coffee+Santa+Monica" target="_blank" rel="noopener">Blue Bottle</a></li>
+      <li><a href="https://www.google.com/search?q=Demitasse+Santa+Monica" target="_blank" rel="noopener">Demitasse</a></li>
+    </ul>
+
+    <h3>Food</h3>
+    <ul class="clean">
+      <li><strong>Donuts</strong> &middot; <a href="https://www.google.com/search?q=Sidecar+Doughnuts+Santa+Monica" target="_blank" rel="noopener">Sidecar</a>, <a href="https://www.google.com/search?q=Randy%27s+Donuts" target="_blank" rel="noopener">Randy's</a></li>
+      <li><strong>Casual / quick</strong> &middot; <a href="https://www.google.com/search?q=Monica+Cafe+Santa+Monica" target="_blank" rel="noopener">Monica</a>, <a href="https://www.google.com/search?q=Papi%27s+Tacos+Santa+Monica" target="_blank" rel="noopener">Papi's Tacos</a>, <a href="https://www.google.com/search?q=Tartine+Santa+Monica" target="_blank" rel="noopener">Tartine</a>, <a href="https://www.google.com/search?q=The+Hive+Santa+Monica" target="_blank" rel="noopener">The Hive</a>, <a href="https://www.google.com/search?q=Bay+Cities+Italian+Deli+Santa+Monica" target="_blank" rel="noopener">Bay Cities Deli</a></li>
+      <li><strong>Sit-down</strong> &middot; <a href="https://www.google.com/search?q=KazuNori+Santa+Monica" target="_blank" rel="noopener">KazuNori</a>, <a href="https://www.google.com/search?q=SugarFish+Santa+Monica" target="_blank" rel="noopener">SugarFish</a>, <a href="https://www.google.com/search?q=Din+Tai+Fung+Santa+Monica" target="_blank" rel="noopener">Din Tai Fung</a>, <a href="https://www.google.com/search?q=LouLou+Santa+Monica" target="_blank" rel="noopener">LouLou</a></li>
+      <li><strong>Delivery</strong> &middot; <a href="https://www.google.com/search?q=Prime+Pizza+Santa+Monica" target="_blank" rel="noopener">Prime Pizza</a></li>
+    </ul>
+
+    <h3>Dog-friendly spots</h3>
+    <ul class="clean">
+      <li><a href="https://www.google.com/search?q=TJ+Maxx+Santa+Monica" target="_blank" rel="noopener">TJ Maxx</a>, <a href="https://www.google.com/search?q=Target+Santa+Monica" target="_blank" rel="noopener">Target</a>, <a href="https://www.google.com/search?q=Vons+Santa+Monica" target="_blank" rel="noopener">Vons</a>, <a href="https://www.google.com/search?q=Chipotle+Santa+Monica" target="_blank" rel="noopener">Chipotle</a></li>
+      <li><a href="https://www.google.com/search?q=The+Butter+End+Bakery+Santa+Monica" target="_blank" rel="noopener">The Butter End</a></li>
+      <li><a href="https://www.google.com/search?q=Couplet+Coffee+Santa+Monica" target="_blank" rel="noopener">Couplet</a>, <a href="https://www.google.com/search?q=Monica+Cafe+Santa+Monica" target="_blank" rel="noopener">Monica</a></li>
+      <li><a href="https://www.google.com/search?q=Burger+Lounge+Santa+Monica" target="_blank" rel="noopener">Burger Lounge</a>, <a href="https://www.google.com/search?q=Nick+the+Greek+Santa+Monica" target="_blank" rel="noopener">Nick the Greek</a></li>
+      <li>Most places with outdoor seating</li>
+    </ul>
+
+    <div class="callout">
+      <div class="callout-label">Wednesday must</div>
+      <p>The <a href="https://www.google.com/search?q=Santa+Monica+Farmers+Market+Wednesday+Arizona" target="_blank" rel="noopener">Santa Monica Farmers Market</a> runs <strong>Wednesdays, 8a&ndash;1p</strong> on Arizona between 2nd and 4th. Best one in the city. Right on Louis's walk route.</p>
+    </div>
+
+    <h3>Places &amp; things to do</h3>
+    <p style="margin-bottom: 16px; color: var(--charcoal); font-size: 15px;">Foodie-shopper picks for an afternoon out:</p>
+    <ul class="clean">
+      <li><a href="https://www.google.com/search?q=Erewhon+Santa+Monica" target="_blank" rel="noopener"><strong>Erewhon Santa Monica</strong></a> &middot; The grocery as a vibe. Hit the Tonic Bar.</li>
+      <li><a href="https://www.google.com/search?q=Montana+Avenue+Santa+Monica" target="_blank" rel="noopener"><strong>Montana Avenue</strong></a> &middot; Boutique shopping, easy afternoon.</li>
+      <li><a href="https://www.google.com/search?q=Abbot+Kinney+Boulevard+Venice" target="_blank" rel="noopener"><strong>Abbot Kinney</strong></a> &middot; Shops, food, people-watching in Venice.</li>
+      <li><a href="https://www.google.com/search?q=Larchmont+Village+Los+Angeles" target="_blank" rel="noopener"><strong>Larchmont Village</strong></a> &middot; Worth a half-day if they want to leave the westside.</li>
+      <li><a href="https://www.google.com/search?q=Little+Tokyo+Los+Angeles" target="_blank" rel="noopener"><strong>Little Tokyo</strong></a> &middot; A real afternoon. Take a Waymo if it sounds fun.</li>
+    </ul>
+  </section>
+
+  <!-- IF SOMETHING BREAKS -->
+  <section id="breaks">
+    <div class="section-num">vii.</div>
+    <h2 class="section-title">If something breaks</h2>
+    <dl>
+      <dt>Building office (next door)</dt><dd><a href="tel:+13103616519">310.361.6519</a> &middot; First call for anything building-related.</dd>
+      <dt>Power outage</dt><dd>Check the <a href="https://www.sce.com/outages-safety" target="_blank" rel="noopener">SCE outage map</a>. If it's just the unit, call the building office.</dd>
+      <dt>Anything else</dt><dd>Text Nik. Always.</dd>
+    </dl>
+  </section>
+
+  <!-- CLOSING -->
+  <div class="closing">
+    <p>Take care of him.<br>He'll take care of you.</p>
+    <div class="sig">&mdash; Nik</div>
+  </div>
+
+</div>
+</body>
+</html>
